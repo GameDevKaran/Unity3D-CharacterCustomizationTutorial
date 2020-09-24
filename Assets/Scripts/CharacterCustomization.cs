@@ -35,18 +35,21 @@ namespace Glauz.Blendshapes
 
             if (value >= 0)
             {
-                if (blendshape.positiveIndex == -1) return;
-                skmr.SetBlendShapeWeight(blendshape.positiveIndex, value);
-                if (blendshape.negativeIndex == -1) return;
-                skmr.SetBlendShapeWeight(blendshape.negativeIndex, 0);
+                if (blendshape.positiveIndex != -1)
+                {
+                   skmr.SetBlendShapeWeight(blendshape.positiveIndex, value);
+                   if (blendshape.negativeIndex != -1) skmr.SetBlendShapeWeight(blendshape.negativeIndex, 0);
+                }
             }
 
             else
             {
-                if (blendshape.negativeIndex == -1) return;
-                skmr.SetBlendShapeWeight(blendshape.negativeIndex, -value);
-                if (blendshape.positiveIndex == -1) return;
-                skmr.SetBlendShapeWeight(blendshape.positiveIndex, 0);
+                if (blendshape.negativeIndex != -1)
+                {
+                   skmr.SetBlendShapeWeight(blendshape.negativeIndex, -value);
+                   if (blendshape.positiveIndex != -1) skmr.SetBlendShapeWeight(blendshape.positiveIndex, 0);
+                }
+                
             }
 
         }
@@ -98,12 +101,11 @@ namespace Glauz.Blendshapes
                     positiveName = blendshapeNames[i];
                     negativeName = altSuffix;
 
-                    if (blendshapeNames.Contains(altSuffix)) exists = true;
+                    exists = blendshapeNames.Contains(altSuffix);
 
                     postiveIndex = mesh.GetBlendShapeIndex(positiveName);
 
-                    if (exists)
-                        negativeIndex = mesh.GetBlendShapeIndex(altSuffix);
+                    if (exists) negativeIndex = mesh.GetBlendShapeIndex(altSuffix);
                 }
 
                 //If Suffix is Negative
@@ -114,12 +116,11 @@ namespace Glauz.Blendshapes
                     negativeName = blendshapeNames[i];
                     positiveName = altSuffix;
 
-                    if (blendshapeNames.Contains(altSuffix)) exists = true;
+                    exists = blendshapeNames.Contains(altSuffix);
 
                     negativeIndex = mesh.GetBlendShapeIndex(negativeName);
 
-                    if (exists)
-                        postiveIndex = mesh.GetBlendShapeIndex(altSuffix);
+                    if (exists) postiveIndex = mesh.GetBlendShapeIndex(altSuffix);
                 }
 
                 //Doesn't have a suffix
@@ -165,7 +166,7 @@ namespace Glauz.Blendshapes
         //Use for editor to check if the Target has been changed so needs to update accordingly
         public bool DoesTargetMatchSkmr()
         {
-            return (target == skmr) ? true : false;
+            return (target == skmr);
         }
 
         public void ClearDatabase()
